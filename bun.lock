@@ -1,0 +1,14 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "dependencies": {
+        "systeminformation": "^5.30.0",
+      },
+    },
+  },
+  "packages": {
+    "systeminformation": ["systeminformation@5.30.0", "", { "os": "!aix", "bin": { "systeminformation": "lib/cli.js" } }, "sha512-LO5pyDw5wQHy5jnNJVMYhBJ9fSO6slGZEzdPkQaRUB5HV7S61Y576hFeQZwBvj3wEoqh8CWkZX+b+PCL3IU3eQ=="],
+  }
+}
