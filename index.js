@@ -5,10 +5,7 @@ const si = require("systeminformation");
 const API_PATH = process.env.API_PATH;
 const CONTAINER_NAME = process.env.ITZG_BEDROCK_SRV_CONTAINER_NAME;
 
-if (
-  (!CONTAINER_NAME || CONTAINER_NAME === "") &&
-  (!API_PATH || API_PATH === "")
-) {
+if (!CONTAINER_NAME || CONTAINER_NAME === "") {
   console.error("Please give the check the env variable!");
 
   process.exit();
@@ -35,16 +32,19 @@ const battReportFn = async () => {
     const { isCharging, percent } = await si.battery();
     const currentLevel = Math.floor(percent);
 
+    // formatted print for dozzle (https://dozzle.dev/)
     console.info(JSON.stringify({ percent, isCharging }));
 
-    // 2. Report to API (Always run this)
-    const body = new FormData();
-    body.set("percentage", currentLevel.toString());
-    body.set("is_charging", isCharging ? "1" : "0");
+    // 2. Report to API (if API_PATH exist)
+    if (API_PATH !== "") {
+      const body = new FormData();
+      body.set("percentage", currentLevel.toString());
+      body.set("is_charging", isCharging ? "1" : "0");
 
-    fetch(API_PATH, { method: "POST", body }).catch((e) =>
-      console.error(`[API FAILED] ${e}`),
-    );
+      fetch(API_PATH, { method: "POST", body }).catch((e) =>
+        console.error(`[API FAILED] ${e}`),
+      );
+    }
 
     // 3. Minecraft Notification Logic
 
